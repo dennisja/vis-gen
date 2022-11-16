@@ -74,7 +74,7 @@ type BarGroupProps<Datum, Key extends GroupKey = GroupKey> = {
   height: number;
   margin?: Margin;
   events?: boolean;
-  yAccessor: (d: Datum, groupKeys: Key[]) => number;
+  yMaxAccessor: (d: Datum, groupKeys: Key[]) => number;
   xAccessor: (d: Datum) => string;
   getGroupKeys: (d: Datum) => Key[];
   formatXValue: (value: string) => string;
@@ -91,7 +91,7 @@ export function BarGroup<
   margin = DEFAULT_MARGIN,
   data,
   xAccessor,
-  yAccessor,
+  yMaxAccessor,
   getGroupKeys,
   formatXValue,
   barColors = DEFAULT_BAR_COLORS,
@@ -113,8 +113,8 @@ export function BarGroup<
     [groupKeys, barWidth],
   );
   const yScale = useMemo(
-    () => createYScale(data, yAccessor, yMax, groupKeys),
-    [data, yAccessor, yMax, groupKeys],
+    () => createYScale(data, yMaxAccessor, yMax, groupKeys),
+    [data, yMaxAccessor, yMax, groupKeys],
   );
   const colorScale = useMemo(
     () => createColorScale(groupKeys, barColors),
