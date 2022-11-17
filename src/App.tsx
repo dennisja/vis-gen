@@ -28,12 +28,12 @@ const formatDate = (date: string) => format(parseDate(date) as Date);
 
 function App() {
   return (
-    <BarGroup
+    <BarGroup<CityTemperature, CityName>
       data={DATA}
       width={900}
       height={600}
       xAccessor={getDate}
-      yAccessor={getGroupMaxCityTemperature}
+      yMaxAccessor={getGroupMaxCityTemperature}
       formatXValue={formatDate}
       getGroupKeys={getCityNames}
     />

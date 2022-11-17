@@ -1,9 +1,11 @@
-import { AxisBottom } from '@visx/axis';
+import { AxisBottom, TickLabelProps } from '@visx/axis';
 import { Group } from '@visx/group';
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale';
 import { BarGroup as VXBarGroup } from '@visx/shape';
 import { DatumObject } from '@visx/shape/lib/types';
 import { useMemo } from 'react';
+
+import { identity } from '../utils';
 
 const DEFAULT_MARGIN = { top: 40, right: 0, bottom: 40, left: 0 };
 const COLORS = {
@@ -64,6 +66,12 @@ function createColorScale<Key extends GroupKey = GroupKey>(
   return colorScale;
 }
 
+const tickLabelProps: TickLabelProps<string> = () => ({
+  fill: COLORS.green,
+  fontSize: 11,
+  textAnchor: 'middle',
+});
+
 type GroupKey = string | number;
 
 type Margin = { top: number; right: number; bottom: number; left: number };
@@ -77,7 +85,7 @@ type BarGroupProps<Datum, Key extends GroupKey = GroupKey> = {
   yMaxAccessor: (d: Datum, groupKeys: Key[]) => number;
   xAccessor: (d: Datum) => string;
   getGroupKeys: (d: Datum) => Key[];
-  formatXValue: (value: string) => string;
+  formatXValue?: (value: string) => string;
   barColors?: string[];
 };
 
@@ -93,7 +101,7 @@ export function BarGroup<
   xAccessor,
   yMaxAccessor,
   getGroupKeys,
-  formatXValue,
+  formatXValue = identity,
   barColors = DEFAULT_BAR_COLORS,
 }: BarGroupProps<Datum, Key>): JSX.Element | null {
   // bounds
@@ -178,11 +186,7 @@ export function BarGroup<
         stroke={COLORS.green}
         tickStroke={COLORS.green}
         hideAxisLine
-        tickLabelProps={() => ({
-          fill: COLORS.green,
-          fontSize: 11,
-          textAnchor: 'middle',
-        })}
+        tickLabelProps={tickLabelProps}
       />
     </svg>
   );
